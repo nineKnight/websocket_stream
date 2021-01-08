@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 nineKnight (mikezhen0707 at gmail dot com)
+// Copyright (c) 2021 nineKnight (mikezhen0707 at gmail dot com)
 //
 
 #ifndef WEBSOCKET_STREAM_HPP
@@ -34,6 +34,8 @@ class websocket_stream
     {
         return beast::get_lowest_layer(derived().ws());
     }
+
+    auto& next_layer() noexcept { return derived().ws().next_layer(); }
 
     virtual bool is_open() noexcept override
     {
@@ -491,9 +493,15 @@ class plain_websocket_stream
     websocket::stream<beast::tcp_stream> ws_;
 
   public:
-    // Create the session
-    explicit plain_websocket_stream(beast::tcp_stream&& stream)
-        : ws_(std::move(stream))
+    // Create the plain_websocket_stream
+    // explicit plain_websocket_stream(beast::tcp_stream&& stream)
+    //    : ws_(std::move(stream))
+    //{
+    //    use_ssl_ = false;
+    //}
+    template <class... Args>
+    explicit plain_websocket_stream(Args&&... args)
+        : ws_(std::forward<Args>(args)...)
     {
         use_ssl_ = false;
     }
@@ -512,9 +520,16 @@ class ssl_websocket_stream
     websocket::stream<beast::ssl_stream<beast::tcp_stream>> ws_;
 
   public:
-    // Create the ssl_websocket_session
-    explicit ssl_websocket_stream(beast::ssl_stream<beast::tcp_stream>&& stream)
-        : ws_(std::move(stream))
+    // Create the ssl_websocket_stream
+    // explicit ssl_websocket_stream(beast::ssl_stream<beast::tcp_stream>&&
+    // stream)
+    //    : ws_(std::move(stream))
+    //{
+    //    use_ssl_ = true;
+    //}
+    template <class... Args>
+    explicit ssl_websocket_stream(Args&&... args)
+        : ws_(std::forward<Args>(args)...)
     {
         use_ssl_ = true;
     }

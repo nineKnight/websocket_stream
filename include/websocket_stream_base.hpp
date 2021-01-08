@@ -1,11 +1,18 @@
 //
-// Copyright (c) 2020 nineKnight (mikezhen0707 at gmail dot com)
+// Copyright (c) 2021 nineKnight (mikezhen0707 at gmail dot com)
 //
 
 #ifndef WEBSOCKET_STREAM_BASE_HPP
 #define WEBSOCKET_STREAM_BASE_HPP
 
+#if 1
+#ifndef BOOST_ASIO_USE_TS_EXECUTOR_AS_DEFAULT
+#define BOOST_ASIO_USE_TS_EXECUTOR_AS_DEFAULT
+#endif
 #include <boost/asio/executor.hpp>
+#else
+#include <boost/asio/any_io_executor.hpp>
+#endif
 #include <boost/beast/core/tcp_stream.hpp>
 #include <boost/beast/ssl.hpp>
 #include <boost/beast/websocket/option.hpp>
@@ -27,7 +34,11 @@ class websocket_stream_base
   public:
     using lowest_layer_type = tcp_stream;
 
+#if 1
     using executor_type = net::executor;
+#else
+    using executor_type = net::any_io_executor;
+#endif
 
     websocket_stream_base() : use_ssl_(false) {}
 

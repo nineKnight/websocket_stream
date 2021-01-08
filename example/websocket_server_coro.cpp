@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 nineKnight (mikezhen0707 at gmail dot com)
+// Copyright (c) 2021 nineKnight (mikezhen0707 at gmail dot com)
 //
 
 //------------------------------------------------------------------------------
@@ -7,6 +7,9 @@
 // Example: WebSocket server, coroutine (plain + SSL)
 //
 //------------------------------------------------------------------------------
+
+#include "websocket_stream.hpp"
+#include "example/common/server_certificate.hpp"
 
 #include <algorithm>
 #include <boost/asio/spawn.hpp>
@@ -20,9 +23,6 @@
 #include <string>
 #include <thread>
 #include <vector>
-
-#include "example/common/server_certificate.hpp"
-#include "websocket_stream.hpp"
 
 namespace beast = boost::beast;            // from <boost/beast.hpp>
 namespace http = beast::http;              // from <boost/beast/http.hpp>
